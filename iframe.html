@@ -13,13 +13,8 @@
     <script src="https://assets.taxdown.es/assets/documents/kibito.bundled.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h2>Kibito Frame</h2>
-      <smart-filter
-        stage="dev"
-        preDG
-        token="eyJraWQiOiJVYVBYMW9CcExhV1hJSmRhVXdUV2xiSEtuaEpMS0xEdHFLRmMxSUVHM2o4PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxYzVmN2IzYS1lZDliLTQzMjMtYmQ3Ny1kZDQ4MDNmN2NmZWEiLCJhdWQiOiIzaWE2ajltbTVyajdrM29yMGgwbGpxdTRqbyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJldmVudF9pZCI6ImI2NjM4YWJjLWJhNmMtNDExMi05ODk4LWE2YzQ4YzBlYWM5YyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjc2ODk0NDE0LCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV96UmIxcGF3dDIiLCJjb2duaXRvOnVzZXJuYW1lIjoiMWM1ZjdiM2EtZWQ5Yi00MzIzLWJkNzctZGQ0ODAzZjdjZmVhIiwiZXhwIjoxNjc2OTc5OTk1LCJpYXQiOjE2NzY5NzYzOTUsImVtYWlsIjoidHh0ZXN0NDJAbWFpbGluYXRvci5jb20ifQ.ohiOjFNiHQ9btGACd7M32saLo0P4uvHxqcXL4UCQjypF-ryzSTI8_zer1Ub5LNw2K0TCczSoIbQfaO2r7yJFIKYQ1STREa1u037V5vHmytUFG0P8j69MoWTC1G-z_eHFFcpbE68sXyeoXIH12q2rRKKg-OR2NubPPk4wJUjzUtomIfBoOMksZUtVwtN27vOw1u-JTXFqDlb-clIxV37vhpetroUuXx12K8AXthC8lbG0k54htmILqODvHgi4ps4HbqetB6xqI8Q05mOcm8d4a-z5lT_foNnkGX8z4RQ7qFt94I9Fz-AYyHMQCEwjld3A98Dn3ao4gIpKJFRAQOCEiA"
-      />
+    <div id="container" class="container">
+      <h2 id="title">Kibito Frame</h2>
     </div>
 
     <script>
@@ -27,17 +22,33 @@
         window.ReactNativeWebView.postMessage(JSON.stringify(msg));
       }
 
-      document.addEventListener('kbSimulateLater', e => {
-        sendMessageToRN({
-          eventType: 'kbSimulateLater',
-          data: e,
-        });
-      });
+      // document.addEventListener('kbSimulateLater', e => {
+      //   sendMessageToRN({
+      //     eventType: 'kbSimulateLater',
+      //     data: e,
+      //   });
+      // });
 
-      sendMessageToRN({ eventType: 'test', data: { name: 'Probando', status: false } });
+      // sendMessageToRN({ eventType: 'test', data: { name: 'Probando', status: false } });
+
+      function createFilter({ token }) {
+        try {
+          const filter = document.createElement('smart-filter');
+          filter.setAttribute('stage', 'dev');
+          filter.setAttribute('preDG', 'true');
+          filter.setAttribute('token', token);
+          const container = document.getElementById('container');
+          container.appendChild(filter);
+        } catch (error) {
+          sendMessageToRN({
+            eventType: 'ERR',
+            data: error,
+          });
+        }
+      }
 
       onload = () => {
-        sendMessageToRN({ eventType: 'loaded', data: { name: 'Probando', status: false } });
+        sendMessageToRN({ eventType: 'ready' });
       };
     </script>
   </body>
